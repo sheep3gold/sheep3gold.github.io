@@ -113,10 +113,16 @@
 <meta property="og:site_name" content="yangxin&#39;s blogs">
 <meta property="og:description" content="SpringMVC的学习">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-09T13:06:52.947Z">
+<meta property="og:image" content="http://yoursite.com/blogPic/springmvc/mvcmodel1.png">
+<meta property="og:image" content="http://yoursite.com/blogPic/springmvc/mvcmodel2.png">
+<meta property="og:image" content="http://yoursite.com/blogPic/springmvc/mvcmodel3.png">
+<meta property="og:image" content="http://yoursite.com/blogPic/springmvc/intercepter1.png">
+<meta property="og:image" content="http://yoursite.com/blogPic/springmvc/intercepter2.png">
+<meta property="og:updated_time" content="2019-01-17T04:32:55.027Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringMVC_study">
 <meta name="twitter:description" content="SpringMVC的学习">
+<meta name="twitter:image" content="http://yoursite.com/blogPic/springmvc/mvcmodel1.png">
 
 
 
@@ -370,7 +376,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  34
+                  2k
                 </span>
               
 
@@ -386,7 +392,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  8
                 </span>
               
             </div>
@@ -409,7 +415,63 @@
       
         <h1 id="SpringMVC的学习"><a href="#SpringMVC的学习" class="headerlink" title="SpringMVC的学习"></a>SpringMVC的学习</h1><a id="more"></a>
 <h3 id="sublime使用"><a href="#sublime使用" class="headerlink" title="sublime使用"></a>sublime使用</h3><p>sublime真是编辑器之神，安装install package,然后安装插件 pretty json cmd+ctrl+j格式化json数据。</p>
-
+<h3 id="SpringMVC流程图"><a href="#SpringMVC流程图" class="headerlink" title="SpringMVC流程图"></a>SpringMVC流程图</h3><h5 id="mvc简易模型图"><a href="#mvc简易模型图" class="headerlink" title="mvc简易模型图"></a>mvc简易模型图</h5><p><img src="\blogPic\springmvc\mvcmodel1.png" alt="mvc1"></p>
+<h5 id="mvc框架结构"><a href="#mvc框架结构" class="headerlink" title="mvc框架结构"></a>mvc框架结构</h5><p><img src="\blogPic\springmvc\mvcmodel2.png" alt="mvc2"></p>
+<p><img src="\blogPic\springmvc\mvcmodel3.png" alt="mvc2"></p>
+<h3 id="springmvc相关内容"><a href="#springmvc相关内容" class="headerlink" title="springmvc相关内容"></a>springmvc相关内容</h3><h4 id="springmvc的使用步骤"><a href="#springmvc的使用步骤" class="headerlink" title="springmvc的使用步骤"></a>springmvc的使用步骤</h4><ol>
+<li>配置web.xml：<br>配置前端控制器：tomcat启动时初始化、指定springmvc的配置文件的位置</li>
+<li>编写springmvc的配置文件：<br>开启包扫描<br>配置视图解析器：指定如果去查找视图</li>
+<li>编写自定义处理器<br>将处理器装配到容器中<br>编写请求的url映射关系：@RequestMapping(“xxx”):来映射要执行的方法<br>在@RequestMapping(“xxx”)下编写方法处理具体的业务逻辑，返回一个ModelAndView，其中可以封装视图名称和数据。</li>
+</ol>
+<h4 id="RequestMapping映射请求"><a href="#RequestMapping映射请求" class="headerlink" title="RequestMapping映射请求"></a>RequestMapping映射请求</h4><ul>
+<li>标准URL映射</li>
+<li>Ant风格的映射：*(0个或多个字符)、？(单个字符)、**(0个或多个路径)</li>
+<li>Rest风格的映射：占位符</li>
+<li>限定请求方法的映射：get、post、put、delete</li>
+<li>限定参数的映射：限定哪些请求参数可以访问</li>
+</ul>
+<h4 id="使用json"><a href="#使用json" class="headerlink" title="使用json"></a>使用json</h4><h5 id="响应json数据"><a href="#响应json数据" class="headerlink" title="响应json数据"></a>响应json数据</h5><p>@ResponseBody：<br>当一个处理请求的方法标记为@ResponseBody时，表示该方法需要输出其他视图（json、xml），springmvc会通过默认的json转化器转化输出。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 将list集合响应成json数据</span><br><span class="line">* @return</span><br><span class="line">*/</span><br><span class="line">@RequestMapping(value=&quot;show28&quot;)</span><br><span class="line">@ResponseBody//将数据响应成json格式的数据</span><br><span class="line">public List&lt;User&gt; test28() &#123;</span><br><span class="line">	 List&lt;User&gt; list = new ArrayList&lt;User&gt;();</span><br><span class="line">	 for(int i = 0;i&lt; 20;i++) &#123;</span><br><span class="line">	 	 User user = new User();</span><br><span class="line">	 	 user.setId(i+1L);</span><br><span class="line">	 	 user.setUsername(&quot;zhangsan&quot;+i);</span><br><span class="line">	 	 user.setName(&quot;张三&quot;+i);</span><br><span class="line">	 	 user.setAge(18);</span><br><span class="line">	 	 list.add(user);</span><br><span class="line">	 	 &#125;</span><br><span class="line">	 	 return list;</span><br><span class="line">	 	 &#125;</span><br></pre></td></tr></table></figure>
+<p>在使用jackson转换json数据时需要消息转换器HttpMessageConverter的支持，该消息转换器默认并没有开启。</p>
+<p>在配置文件中注册注解驱动：配置该标签后会自动注册消息转换器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--配置注解驱动--&gt;</span><br><span class="line">&lt;mvc:annotation-driven&gt;&lt;/mvc:annotation-driven&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="使用pojo接收json数据"><a href="#使用pojo接收json数据" class="headerlink" title="使用pojo接收json数据"></a>使用pojo接收json数据</h5><p>@RequestBody：接收一个json并且转换成一个对象。<br>接收一个json数据并反序列化为一个user对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">  * 将提交的json格式的数据封装到user对象中</span><br><span class="line"> * @RequestBody()：自动将json数据序列化成一个user对象</span><br><span class="line"> * @param model</span><br><span class="line"> * @param user</span><br><span class="line"> * @return</span><br><span class="line"> */</span><br><span class="line"> @RequestMapping(value=&quot;show29&quot;)</span><br><span class="line"> public String test29(Model model,@RequestBody User</span><br><span class="line"> user) &#123;</span><br><span class="line"> 	 model.addAttribute(&quot;msg&quot;, user);</span><br><span class="line"> 	 return &quot;hello&quot;;</span><br><span class="line"> 	 &#125;</span><br></pre></td></tr></table></figure>
+<h5 id="解决中文乱码问题"><a href="#解决中文乱码问题" class="headerlink" title="解决中文乱码问题"></a>解决中文乱码问题</h5><p>原因:使用的消息转换器换成了StringHttpMessageConverter，<br>该转换器中使用的默认的编码为ISO_8859_1：</p>
+<p>解决方案:<br>    修改消息转换器中的编码集</p>
+<p>将注解驱动修改如下：</p>
+<ol>
+<li>设置String的消息转换器</li>
+<li>该消息转换器中有一个构造函数可以设置编码集，因此只要直接赋值即可。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--配置注解驱动--&gt;</span><br><span class="line">&lt;mvc:annotation-driven&gt;</span><br><span class="line">    &lt;mvc:message-converters&gt;</span><br><span class="line">        &lt;bean class=&quot;org.springframework.http.converter.StringHttpMessageConverter&quot;&gt;</span><br><span class="line">            &lt;constructor-arg index=&quot;0&quot; value=&quot;utf-8&quot;&gt;&lt;/constructor-arg&gt;</span><br><span class="line">        &lt;/bean&gt;</span><br><span class="line">    &lt;/mvc:message-converters&gt;</span><br><span class="line">&lt;/mvc:annotation-driven&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="RestController"><a href="#RestController" class="headerlink" title="@RestController"></a>@RestController</h4><p>有时如果在一个Contoller中所有的方法都是用来响应json格式数据的，那么如果有多个方法，就需要在多个方法上使用@ResponseBody，这样太麻烦，springmvc提供了一个@RestController，将该注解使用在Controller类上，那么该controller中的所有方法都默认是响应json格式的数据了。</p>
+<h4 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h4><h5 id="步骤一：添加依赖"><a href="#步骤一：添加依赖" class="headerlink" title="步骤一：添加依赖"></a>步骤一：添加依赖</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 文件上传 --&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;commons-fileupload&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;commons-fileupload&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.3.1&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="步骤二：配置文件上传解析器"><a href="#步骤二：配置文件上传解析器" class="headerlink" title="步骤二：配置文件上传解析器"></a>步骤二：配置文件上传解析器</h5><p>需要在springmvc的配置文件中配置一个文件上传解析器（在spring-web包下），并且设置其解析器的某些参数，如上传文件大小和编码集等。</p>
+<p>在springmvc-servlet.xml中配置：<br>注意：必须配置id属性，并且名称固定为multipartResolver，否则无法使用.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--配置文件上传解析器--&gt;</span><br><span class="line">&lt;bean id=&quot;multipartResolver&quot; class=&quot;org.springframework.web.multipart.commons.CommonsMultipartResolver&quot;&gt;</span><br><span class="line">    &lt;!--设置上传文件大小--&gt;</span><br><span class="line">    &lt;property name=&quot;maxUploadSize&quot; value=&quot;5242880&quot;&gt;&lt;/property&gt;</span><br><span class="line">    &lt;!--设置上传文件编码集--&gt;</span><br><span class="line">    &lt;property name=&quot;defaultEncoding&quot; value=&quot;utf-8&quot;&gt;&lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="步骤三：Controller方法"><a href="#步骤三：Controller方法" class="headerlink" title="步骤三：Controller方法"></a>步骤三：Controller方法</h5><p>注意:存放文件的目录upload需要先行创建好</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 文件上传</span><br><span class="line"> * 需要通过MultipartFile类型来接收上传数据</span><br><span class="line"> *</span><br><span class="line"> * @throws Exception</span><br><span class="line"> * @throws IllegalStateException</span><br><span class="line"> */</span><br><span class="line">@RequestMapping(&quot;show31&quot;)</span><br><span class="line">public String test31(Model model,@RequestParam(&quot;file&quot;)MultipartFile file) throws Exception&#123;</span><br><span class="line"></span><br><span class="line">    if (file!=null) &#123;</span><br><span class="line">        //将文件存储到指定路径</span><br><span class="line">        file.transferTo(new File(&quot;d://upload//&quot;+file.getOriginalFilename()));</span><br><span class="line">    &#125;</span><br><span class="line">    model.addAttribute(&quot;msg&quot;, &quot;上传成功!&quot;);</span><br><span class="line">    return &quot;hello&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="转发及重定向（forward、redirect）"><a href="#转发及重定向（forward、redirect）" class="headerlink" title="转发及重定向（forward、redirect）"></a>转发及重定向（forward、redirect）</h4><p>返回值为字符串时，默认为视图名称。当返回值字符串是以”forward:”或者”redirect:”开头，则会被认为是转发或者重定向。<br>使用方式如下：<br>转发：forward:/hello/show.do(绝对路径)或者forward:show.do(相对路径)<br>重定向：redirect:/hello/show.do(绝对路径)或者redirect:show.do(相对路径)<br>/：表示绝对路径，指的是localhost:8080/springmvc（项目名称可以省略）<br>不带/：表示相对路径，相对于当前请求的路径<br>    如果当前请求是：localhost:8080/springmvc（项目名称可以省略）/hello/show32<br>    那么不带/：表示localhost:8080/springmvc（项目名称可以省略）/hello/</p>
+<h4 id="拦截器"><a href="#拦截器" class="headerlink" title="拦截器"></a>拦截器</h4><p>HandlerExecutionChain是一个执行链，当请求到达DispatchServlet时，DispatchServlet根据请求路径到HandlerMapping查询具体的Handler，从HandlerMapping返回执行链给DispatcherServlet，其中包含了一个具体的Handler对象和Interceptors（拦截器集合）。</p>
+<p>拦截器一般用于对处理器进行预处理和后处理。</p>
+<p>应用场景：</p>
+<p>1、权限检查：如登录检测，进入处理器前检测用户是否登录，如果没有登陆直接返回到登录页面。</p>
+<p>2、性能监控：有时候系统在某段时间莫名其妙的慢，可以通过拦截器在进入处理器之前记录开始时间，在处理完后记录结束时间，统计处理器执行使用了多少时间。</p>
+<p>springmvc的拦截器接口（HandlerInterceptor）定义了三个方法：</p>
+<ul>
+<li>preHandle调用Handler之前执行，称为预处理回调方法<br>返回值：true表示放行，后续业务逻辑继续执行<pre><code>false表示被拦截，后续业务逻辑不再执行，但之前返回true的拦截器的请求完成回调方法会倒叙执行
+</code></pre></li>
+<li>postHandle调用Handler之后执行，称为后处理回调方法</li>
+<li>afterCompletion视图渲染完成之后执行，可以称为请求完成回调方法</li>
+</ul>
+<h5 id="拦截器的执行过程"><a href="#拦截器的执行过程" class="headerlink" title="拦截器的执行过程"></a>拦截器的执行过程</h5><p><img src="\blogPic\springmvc\intercepter1.png" alt="intercepter1"></p>
+<p><img src="\blogPic\springmvc\intercepter2.png" alt="intercepter2"> </p>
+<p>拦截器的配置过程：</p>
+<p>编写自定义拦截器实现HandlerInterceptor<br>在springmvc-servlet.xml中注册自定义拦截器</p>
+<h6 id="配置自定义拦截器"><a href="#配置自定义拦截器" class="headerlink" title="配置自定义拦截器"></a>配置自定义拦截器</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--配置拦截器--&gt;</span><br><span class="line">&lt;mvc:interceptors&gt;</span><br><span class="line">    &lt;mvc:interceptor&gt;</span><br><span class="line">        &lt;!--拦截所有请求--&gt;</span><br><span class="line">        &lt;mvc:mapping path=&quot;/**&quot;/&gt;</span><br><span class="line">        &lt;bean class=&quot;cn.itcast.interceptor.MyInterceptor1&quot;&gt;&lt;/bean&gt;</span><br><span class="line">    &lt;/mvc:interceptor&gt;</span><br><span class="line">&lt;/mvc:interceptors&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="配置乱码过滤器"><a href="#配置乱码过滤器" class="headerlink" title="配置乱码过滤器"></a>配置乱码过滤器</h4><h5 id="POST"><a href="#POST" class="headerlink" title="POST"></a>POST</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--post请求乱码过滤器--&gt;</span><br><span class="line">&lt;filter&gt;</span><br><span class="line">    &lt;filter-name&gt;characterEncodingFilter&lt;/filter-name&gt;</span><br><span class="line">    &lt;filter-class&gt;org.springframework.web.filter.CharacterEncodingFilter&lt;/filter-class&gt;</span><br><span class="line">    &lt;init-param&gt;</span><br><span class="line">        &lt;param-name&gt;encoding&lt;/param-name&gt;</span><br><span class="line">        &lt;param-value&gt;utf-8&lt;/param-value&gt;</span><br><span class="line">    &lt;/init-param&gt;</span><br><span class="line">&lt;/filter&gt;</span><br><span class="line">&lt;filter-mapping&gt;</span><br><span class="line">    &lt;filter-name&gt;characterEncodingFilter&lt;/filter-name&gt;</span><br><span class="line">    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;</span><br><span class="line">&lt;/filter-mapping&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="GET"><a href="#GET" class="headerlink" title="GET"></a>GET</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugins&gt;</span><br><span class="line">    &lt;!-- 配置Tomcat插件 --&gt;</span><br><span class="line">    &lt;plugin&gt;</span><br><span class="line">        &lt;groupId&gt;org.apache.tomcat.maven&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;tomcat7-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">        &lt;configuration&gt;</span><br><span class="line">            &lt;port&gt;8080&lt;/port&gt;</span><br><span class="line">            &lt;path&gt;/&lt;/path&gt;&lt;!-- 相当于工程名称，一旦配置了/，那么在访问时可以省略工程名称 --&gt;</span><br><span class="line">            &lt;!--设置get请求编码集--&gt;</span><br><span class="line">            &lt;uriEncoding&gt;utf-8&lt;/uriEncoding&gt;</span><br><span class="line">        &lt;/configuration&gt;</span><br><span class="line">    &lt;/plugin&gt;</span><br><span class="line">&lt;/plugins&gt;</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -608,7 +670,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SpringMVC的学习"><span class="nav-number">1.</span> <span class="nav-text">SpringMVC的学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sublime使用"><span class="nav-number">1.0.1.</span> <span class="nav-text">sublime使用</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SpringMVC的学习"><span class="nav-number">1.</span> <span class="nav-text">SpringMVC的学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sublime使用"><span class="nav-number">1.0.1.</span> <span class="nav-text">sublime使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SpringMVC流程图"><span class="nav-number">1.0.2.</span> <span class="nav-text">SpringMVC流程图</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#mvc简易模型图"><span class="nav-number">1.0.2.0.1.</span> <span class="nav-text">mvc简易模型图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#mvc框架结构"><span class="nav-number">1.0.2.0.2.</span> <span class="nav-text">mvc框架结构</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#springmvc相关内容"><span class="nav-number">1.0.3.</span> <span class="nav-text">springmvc相关内容</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#springmvc的使用步骤"><span class="nav-number">1.0.3.1.</span> <span class="nav-text">springmvc的使用步骤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RequestMapping映射请求"><span class="nav-number">1.0.3.2.</span> <span class="nav-text">RequestMapping映射请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用json"><span class="nav-number">1.0.3.3.</span> <span class="nav-text">使用json</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#响应json数据"><span class="nav-number">1.0.3.3.1.</span> <span class="nav-text">响应json数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用pojo接收json数据"><span class="nav-number">1.0.3.3.2.</span> <span class="nav-text">使用pojo接收json数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#解决中文乱码问题"><span class="nav-number">1.0.3.3.3.</span> <span class="nav-text">解决中文乱码问题</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RestController"><span class="nav-number">1.0.3.4.</span> <span class="nav-text">@RestController</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件上传"><span class="nav-number">1.0.3.5.</span> <span class="nav-text">文件上传</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#步骤一：添加依赖"><span class="nav-number">1.0.3.5.1.</span> <span class="nav-text">步骤一：添加依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#步骤二：配置文件上传解析器"><span class="nav-number">1.0.3.5.2.</span> <span class="nav-text">步骤二：配置文件上传解析器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#步骤三：Controller方法"><span class="nav-number">1.0.3.5.3.</span> <span class="nav-text">步骤三：Controller方法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#转发及重定向（forward、redirect）"><span class="nav-number">1.0.3.6.</span> <span class="nav-text">转发及重定向（forward、redirect）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拦截器"><span class="nav-number">1.0.3.7.</span> <span class="nav-text">拦截器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#拦截器的执行过程"><span class="nav-number">1.0.3.7.1.</span> <span class="nav-text">拦截器的执行过程</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#配置自定义拦截器"><span class="nav-number">1.0.3.7.1.1.</span> <span class="nav-text">配置自定义拦截器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置乱码过滤器"><span class="nav-number">1.0.3.8.</span> <span class="nav-text">配置乱码过滤器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#POST"><span class="nav-number">1.0.3.8.1.</span> <span class="nav-text">POST</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#GET"><span class="nav-number">1.0.3.8.2.</span> <span class="nav-text">GET</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -660,7 +722,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共441字</span>
+  <span class="post-count">博客全站共2.4k字</span>
 </div>
         
 

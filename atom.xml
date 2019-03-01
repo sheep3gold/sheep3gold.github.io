@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-03-01T05:15:06.286Z</updated>
+  <updated>2019-03-01T06:52:09.214Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>简历</title>
+    <link href="http://yoursite.com/2019/03/01/%E7%AE%80%E5%8E%86/"/>
+    <id>http://yoursite.com/2019/03/01/简历/</id>
+    <published>2019-03-01T06:36:36.000Z</published>
+    <updated>2019-03-01T06:52:09.214Z</updated>
+    
+    <content type="html"><![CDATA[<p>#<center>简历</center></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;#&lt;center&gt;简历&lt;/center&gt;&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>我过去20年的一些事</title>

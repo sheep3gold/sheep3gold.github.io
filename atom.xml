@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>yangxin&#39;s blogs</title>
+  <title>sunstar&#39;s blogs</title>
   
   
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-03-01T08:44:54.030Z</updated>
+  <updated>2019-03-03T10:21:55.919Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Java学习笔记</title>
+    <link href="http://yoursite.com/2019/03/03/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    <id>http://yoursite.com/2019/03/03/Java学习笔记/</id>
+    <published>2019-03-03T09:51:05.000Z</published>
+    <updated>2019-03-03T10:21:55.919Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Java学习笔记"><a href="#Java学习笔记" class="headerlink" title="Java学习笔记"></a><center>Java学习笔记</center></h1><a id="more"></a><ol><li><p>基本数据类型（8种 ）:</p><p>​    整型：</p><p>​        byte            1字节    8位(0000 0000)</p><p>​        short           2字节</p><p>​        int               4字节</p><p>​        long            8字节</p><p>​    浮点型：</p><p>​        float            4字节</p><p>​        double        8字节</p><p>​    字符型：</p><p>​        char            2字节</p><p>​    布尔型：</p><p>​        boolean     1字节</p></li><li><p>在集合框架中，有些类是线程安全的，这些都是jdk1.1中的出现的。在jdk1.2之后，就出现许许多多非线程安全的类。 下面是这些线程安全的同步的类：</p><p>vector：就比arraylist多了个同步化机制（线程安全），因为效率较低，现在已经不太建议使用。在web应用中，特别是前台页面，往往效率（页面响应速度）是优先考虑的。</p><p>statck：堆栈类，先进后出</p><p>hashtable：就比hashmap多了个线程安全</p><p>enumeration：枚举，相当于迭代器</p><p>除了这些之外，其他的都是非线程安全的类和接口。</p></li><li><p>类中声明的变量有默认初始值；方法中声明的变量没有默认初始值，必须在定义时初始化，否则在访问该变量时会出错。</p><p>boolean类型默认值是false</p></li><li><p>sleep和wait的区别有：</p></li></ol><ul><li><p>这两个方法来自不同的类分别是Thread和Object</p></li><li><p>wait，notify和notifyAll只能在同步控制方法或者同步控制块里面使用，而sleep可以在任何地方使用</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(x)&#123;</span><br><span class="line"></span><br><span class="line">     x.notify()</span><br><span class="line"></span><br><span class="line">    <span class="comment">//或者wait()</span></span><br><span class="line"></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></li></ul><ol start="5"><li><p>抽象类可以定义普通成员变量而接口不可以，但是抽象类和接口都可以定义静态成员变量，只是接口的静态成员变量要用static final public 来修饰（可以省略）。</p></li><li><p>Java中的char是Unicode编码。Unicode编码占两个字节，就是16位，足够存储一个汉字。</p></li><li><p>1）调用super()必须写在子类构造方法的第一行，否则编译不通过。每个子类构造方法的第一条语句，都是隐含地调用super()，如果父类没有这种形式的构造函数，那么在编译的时候就会报错。</p><p>2）super()和this()类似,区别是，super从子类中调用父类的构造方法，this()在同一类内调用其它方法。</p><p>3）super()和this()均需放在构造方法内第一行。</p><p>4）尽管可以用this调用一个构造器，但却不能调用两个。</p><p>5）this和super不能同时出现在一个构造函数里面，因为this必然会调用其它的构造函数，其它的构造函数必然也会有super语句的存在，所以在同一个构造函数里面有相同的语句，就失去了语句的意义，编译器也不会通过。</p><p>6）this()和super()都指的是对象，所以，均不可以在static环境中使用。包括：static变量,static方法，static语句块。</p><p>7）从本质上讲，this是一个指向本对象的指针, 然而super是一个Java关键字。</p></li><li><p>可以直接将字符串“test”赋值给声明的Stirng类和StringBuffer类的变量  <strong>引用类型只有String</strong>可以直接赋值，其他的都要<strong>new</strong>出来</p></li><li><p>equal:是用来比较两个对象内部的内容是否相等的。</p><p>==：是用来判断两个对象的地址是否相同，即是否是指相同一个对象。</p></li><li><p>当一个优先级高的线程进入就绪状态时，它只是有较高的概率能够抢到CPU的执行权，不是一定就能抢到执行权</p><p>抛出一个例外时，该线程就终止了</p><p>当前线程调用sleep()方法或者wait()方法时，只是暂时停止了该线程的运行，不是终止线程</p></li><li><ul><li>抽象类和方法都不能被实例化</li><li>抽象类可以实现接口</li><li>抽象类方法默认访问权限都是default</li><li>接口就是访问的，默认访问权限都是public</li></ul></li><li><p>servlet在多线程下其本身并不是线程安全的。</p><p>如果在类中定义成员变量，而在service中根据不同的线程对该成员变量进行更改，那么在并发的时候就会引起错误。最好是在方法中，定义局部变量，而不是类变量或者对象的成员变量。由于方法中的局部变量是在栈中，彼此各自都拥有独立的运行空间而不会互相干扰，因此才做到线程安全。</p></li><li><p>定义在同一个包（package）内的类可以不经过import而直接相互使用。</p></li><li><p>JSP内置对象有：</p><p>1)request对象</p><p>​     客户端的请求信息被封装在request对象中，通过它才能了解到客户的需求，然后做出响应。    它是HttpServletRequest类的实例。</p><p>2）response对象</p><p>​     response对象包含了响应客户请求的有关信息，但在JSP中很少直接用到它。它是HttpServletResponse类的实例。</p><p>3）session对象</p><p>​     session对象指的是客户端与服务器的一次会话，从客户连到服务器的一个WebApplication开始，直到客户端与服务器断开连接为止。它是HttpSession类的实例.</p><p>4）out对象</p><p>​     out对象是JspWriter类的实例,是向客户端输出内容常用的对象</p><p>5）page对象</p><p>​     page对象就是指向当前JSP页面本身，有点象类中的this指针，它是java.lang.Object类的实例</p><p>6）application对象</p><p>​     application对象实现了用户间数据的共享，可存放全局变量。它开始于服务器的启动，直到服务器的关闭，在此期间，此对象将一直存在；这样在用户的前后连接或不同用户之间的连接中，可以对此对象的同一属性进行操作；在任何地方对此对象属性的操作，都将影响到其他用户对此的访问。服务器的启动和关闭决定了application对象的生命。它是ServletContext类的实例。</p><p>7）exception对象</p><p>   exception对象是一个例外对象，当一个页面在运行过程中发生了例外，就产生这个对象。如果一个JSP页面要应用此对象，就必须把isErrorPage设为true，否则无法编译。他实际上是java.lang.Throwable的对象</p><p>8）pageContext对象</p><p>pageContext对象提供了对JSP页面内所有的对象及名字空间的访问，也就是说他可以访问到本页所在的SESSION，也可以取本页面所在的application的某一属性值，他相当于页面中所有功能的集大成者，它的本 类名也叫pageContext。</p><p>9）config对象</p><p>config对象是在一个Servlet初始化时，JSP引擎向它传递信息用的，此信息包括Servlet初始化时所要用到的参数（通过属性名和属性值构成）以及服务器的有关信息（通过传递一个ServletContext对象）</p></li><li><p>构造方法：可见性修饰符方面，使用private也是可以的，能有一些特殊的作用比如在单例模式下。</p></li><li><p>被static修饰的变量称为静态变量，静态变量属于整个类，而局部变量属于方法，只在该方法内有效，所以static不能修饰局部变量</p></li><li><p><img src="\blogPic\Java学习笔记\pic1.png" alt="屏幕快照 2019-03-02 下午2.32.43.png"></p></li><li><p>ThreadLocal类用于创建一个线程本地变量</p><p>在Thread中有一个成员变量ThreadLocals，该变量的类型是ThreadLocalMap,也就是一个Map，它的键是threadLocal，值为就是变量的副本。通过ThreadLocal的get()方法可以获取该线程变量的本地副本，在get方法之前要先set,否则就要重写initialValue()方法。</p><p>ThreadLocal的使用场景：</p><p>​        数据库连接：在多线程中，如果使用懒汉式的单例模式创建Connection对象，由于该对象是共享的，那么必须要使用同步方法保证线程安全，这样当一个线程在连接数据库时，那么另外一个线程只能等待。这样就造成性能降低。如果改为哪里要连接数据库就来进行连接，那么就会频繁的对数据库进行连接，性能还是不高。这时使用ThreadLocal就可以既可以保证线程安全又可以让性能不会太低。但是ThreadLocal的缺点时占用了较多的空间。</p></li><li><p>父类静态域——》子类静态域——》父类成员初始化——》父类构造块——》<strong>父类构造方法</strong>——》<strong>子类成员初始化</strong>——》子类构造块——》<strong>子类构造方法；</strong></p></li><li><p>Collection</p><p>​    —–List</p><p>​               —–LinkedList    非同步</p><p>​                —-ArrayList      非同步，实现了可变大小的元素数组</p><p>​                —-Vector          同步</p><p>​                         ——Stack</p><p>​    —–Set   不允许有相同的元素</p><p>Map</p><p>​    —–HashTable        同步，实现一个key–value映射的哈希表</p><p>​    —–HashMap          非同步，</p><p>​    —–WeakHashMap   改进的HashMap，实现了“弱引用”，如果一个key不被引用，则被GC回收</p></li><li><p>java的基本编程单元是类，基本存储单元是变量。</p></li><li><p><strong>方法的重写（**</strong>override<strong>**）两同两小一大原则</strong>：</p><p>方法名相同，参数类型相同</p><p>子类返回类型小于等于父类方法返回类型，</p><p>子类抛出异常小于等于父类方法抛出异常，</p><p>子类访问权限大于等于父类方法访问权限。</p></li><li><p>线程调度分为协同式调度和抢占式调度，Java使用的是抢占式调度，也就是每个线程将由操作系统来分配执行时间，线程的切换不由线程本身来决定（协同式调度）。这就是平台独立的原因。</p></li><li><p>final修饰的成员变量为基本数据类型是，在赋值之后无法改变。当final修饰的成员变量为引用数据类型时，在赋值后其指向地址无法改变，但是对象内容还是可以改变的。</p><p>final修饰的成员变量在赋值时可以有三种方式。1、在声明时直接赋值。2、在构造器中赋值。3、在初始代码块中进行赋值。</p></li><li><p>CopyOnWriteArrayList适合使用在读操作远远大于写操作的场景里，比如缓存。</p><p>ReadWriteLock 当写操作时，其他线程无法读取或写入数据，而当读操作时，其它线程无法写入数据，但却可以读取数据 。适用于 读取远远大于写入的操作。</p><p>ConcurrentHashMap是一个线程安全的Hash Table，它的主要功能是提供了一组和HashTable功能相同但是线程安全的方法。ConcurrentHashMap可以做到读取数据不加锁，并且其内部的结构可以让其在进行写操作的时候能够将锁的粒度保持地尽量地小，不用对整个ConcurrentHashMap加锁。</p></li><li><p>CopyOnWriteArrayList适合使用在读操作远远大于写操作的场景里，比如缓存。</p><p>ReadWriteLock 当写操作时，其他线程无法读取或写入数据，而当读操作时，其它线程无法写入数据，但却可以读取数据 。适用于 读取远远大于写入的操作。</p><p>ConcurrentHashMap是一个线程安全的Hash Table，它的主要功能是提供了一组和HashTable功能相同但是线程安全的方法。ConcurrentHashMap可以做到读取数据不加锁，并且其内部的结构可以让其在进行写操作的时候能够将锁的粒度保持地尽量地小，不用对整个ConcurrentHashMap加锁。</p><ul><li><p><strong>Volatile</strong>与锁相比，Volatile 变量是一种非常简单但同时又非常脆弱的同步机制，它在某些情况下将提供优于锁的性能和伸缩性。如果严格遵循 volatile 的使用条件 —— 即变量真正独立于其他变量和自己以前的值 —— 在某些情况下可以使用 volatile 代替 synchronized 来简化代码。然而，使用 volatile 的代码往往比使用锁的代码更加容易出错。</p></li><li><p>您只能在有限的一些情形下使用 volatile 变量替代锁。要使 volatile 变量提供理想的线程安全，必须同时满足下面两个条件：</p></li><li><ul><li>（1）对变量的写操作不依赖于当前值。</li><li>（2）该变量没有包含在具有其他变量的不变式中。</li></ul></li><li><p>实际上，这些条件表明，<strong>可以被写入</strong> <strong>volatile</strong> <strong>变量的这些有效值独立于任何程序的状态，包括变量的当前状态。</strong></p></li><li><p>第一个条件的限制使 volatile 变量不能用作线程安全计数器。<strong>虽然增量操作（**</strong>x++<strong>**）看上去类似一个单独操作，实际上它是一个由读取－修改－写入操作序列组成的组合操作，必须以原子方式执行，而</strong> <strong>volatile</strong> <strong>不能提供必须的原子特性。实现正确的操作需要使</strong> <strong>x</strong> <strong>的值在操作期间保持不变，而</strong> <strong>volatile</strong> <strong>变量无法实现这点。</strong></p></li></ul></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Java学习笔记&quot;&gt;&lt;a href=&quot;#Java学习笔记&quot; class=&quot;headerlink&quot; title=&quot;Java学习笔记&quot;&gt;&lt;/a&gt;&lt;center&gt;Java学习笔记&lt;/center&gt;&lt;/h1&gt;
+    
+    </summary>
+    
+      <category term="学习" scheme="http://yoursite.com/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
+    
+  </entry>
   
   <entry>
     <title>简历</title>

@@ -115,7 +115,7 @@
 <meta property="og:description" content="Java学习笔记">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/blogPic/Java学习笔记/pic1.png">
-<meta property="og:updated_time" content="2019-03-03T10:21:55.919Z">
+<meta property="og:updated_time" content="2019-03-04T04:38:17.489Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java学习笔记">
 <meta name="twitter:description" content="Java学习笔记">
@@ -395,7 +395,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3.2k
+                  4.3k
                 </span>
               
 
@@ -411,7 +411,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  11
+                  15
                 </span>
               
             </div>
@@ -583,7 +583,54 @@
 </li>
 </ul>
 </li>
+<li><p>在多态中，永远只会使用父类中的成员变量，不会使用子类成员变量<br>成员变量，编译运行都看左边（父类中的）。只有成员方法，编译看父类，运行先看看子类对象，如果子类没有在运行父类中的方法。</p>
+</li>
+<li><p>抽象类有构造函数，但不能创建对象。</p>
+<p>在接口的成员位置上只能定义：成员变量和成员函数</p>
+<p><strong>接口中的成员变量修饰：**</strong>public static final**</p>
+<p><strong>接口中的成员函数：**</strong>public abstract<strong> </strong>返回值类型<strong>  </strong>函数名<strong>**(</strong> <strong>参数列表</strong> <strong>);</strong></p>
+<p>接口和接口：继承关系，一个接口可以继承多个接口。extends</p>
+<p>抽象类中除了具有抽象方法外，还可以定义其它方法（在抽象类中如果不是抽象方法，子类可以不用复写该方法）</p>
+<p>接口中没有构造函数；抽象类中具有构造函数；</p>
+<p>protected只能修饰成员函数或成员变量，不能修饰类</p>
+</li>
+<li><p>Public,private只能修饰成员位置的内容，不可以修饰局部变量。</p>
+</li>
+<li><p>swich中 case给出的值只能是常量, 不能是变量；case给出的值不能重复；default语句可以省略不写, 也可以放在任意位置, 但无论位置摆放在哪, 都是最后才执行。</p>
+</li>
+<li><p>多个catch中异常类的定义顺序：从小到大；try关键字通常是和catch关键字一起使用。</p>
+<p>关键字try、catch、finally都不能单独使用。</p>
+</li>
+<li><p>为了让程序员方便对字符进行操作，Java提供了专门以字符作为操作单位的类——字符流，其底层仍然为字节流。BufferedReader类本身不具备读取功能，需要依赖于字符输入流来实现读取操作。</p>
+</li>
+<li><p>正则表达式只能用在操作字符串上。</p>
+</li>
+<li><p>实现runnable接口，将线程任务单独分离出来封装成对象，类型就是Runnable接口类型。Runnable接口对线程对象和线程任务进行解耦</p>
+<p>Thread类的wait()方法：是指让当前线程处于等待状态，让释放线程锁对象，让其它线程能够获得锁对象，直到其它线程调用notify()或者notifyAll()方法唤醒后才能继续执行.</p>
+<p>Thread类的notifyAll()方法：是指唤醒所有正在等待锁对象的线程。</p>
+</li>
+<li><p>无状态对象一定是线程安全的。<br>当在无状态的类中添加一个状态时，如果该状态完全由线程安全的对象来管理，那么这个类仍然是线程安全的。<br>Volatile是一种比sychronuzed更轻量级的同步机制；<br>加锁机制既可以确保可见性又可以确保原子性，而volatile变量只能确保可见性；</p>
+</li>
+<li><p>排序算法：冒择路（入）兮（希尔）快归堆</p>
+</li>
+<li><p>ajax的ready状态；</p>
+<p>readyState是XMLHttpRequest对象的一个属性，用来标识当前XMLHttpRequest对象处于什么状态。<br>readyState总共有5个状态值，分别为0~4，每个值代表了不同的含义</p>
+<p>0：初始化，XMLHttpRequest对象还没有完成初始化<br>1：载入，XMLHttpRequest对象开始发送请求<br>2：载入完成，XMLHttpRequest对象的请求发送完成<br>3：解析，XMLHttpRequest对象开始读取服务器的响应<br>4：完成，XMLHttpRequest对象读取服务器响应结束</p>
+</li>
+<li><p>ajax的status【HTTP响应状态码】</p>
+<p>status是XMLHttpRequest对象的一个属性，表示响应的HTTP状态码<br>在HTTP1.1协议下，HTTP状态码总共可分为5大类</p>
+<p>1xx：信息响应类，表示接收到请求并且继续处理<br>2xx：处理成功响应类，表示动作被成功接收、理解和接受<br>3xx：重定向响应类，为了完成指定的动作，必须接受进一步处理<br>4xx：客户端错误，客户请求包含语法错误或者是不能正确执行<br>5xx：服务端错误，服务器不能正确执行一个正确的请求</p>
+<p>常见状态码：<br>200：请求，响应成功<br>404：请求路径错误<br>500：服务器内部异常</p>
+</li>
+<li><p>groupId：定义当前Maven项目名称<br>·        artifactId：定义项目模块<br>·        version：定义当前项目的当前版本 </p>
+</li>
+<li><p>sublime格式化json  ctrl+cmd+j</p>
+</li>
+<li><p>Solr基础学习:<br>SLF4J: Failed to load class “org.slf4j.impl.StaticLoggerBinder”. SLF4J: Defaulting to no-operation (NOP) logger implementation<br>解决方案：<br>添加maven依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>slf4j-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.7.5<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>slf4j-simple<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.6.4<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
 </ol>
+<p>​        </p>
 
       
     </div>
@@ -632,6 +679,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/04/Sql学习/" rel="prev" title="Sql学习">
+                Sql学习 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -710,7 +761,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -732,7 +783,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -846,7 +897,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共51.3k字</span>
+  <span class="post-count">博客全站共55.4k字</span>
 </div>
         
 

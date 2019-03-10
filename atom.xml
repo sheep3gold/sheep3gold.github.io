@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-03-04T04:39:24.134Z</updated>
+  <updated>2019-03-09T14:35:42.131Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,46 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>hadoop学习</title>
+    <link href="http://yoursite.com/2019/03/09/hadoop%E5%AD%A6%E4%B9%A0/"/>
+    <id>http://yoursite.com/2019/03/09/hadoop学习/</id>
+    <published>2019-03-09T13:57:27.000Z</published>
+    <updated>2019-03-09T14:35:42.131Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="hadoop学习"><a href="#hadoop学习" class="headerlink" title="hadoop学习"></a><center>hadoop学习</center></h1><a id="more"></a><h2 id="zookeeper的介绍"><a href="#zookeeper的介绍" class="headerlink" title="zookeeper的介绍"></a>zookeeper的介绍</h2><h3 id="zookeeper概述"><a href="#zookeeper概述" class="headerlink" title="zookeeper概述"></a>zookeeper概述</h3><p>Zookeeper 是一个分布式协调服务的开源框架。 主要用来解决分布式集群中应用系统的一致性问题，例如怎样避免同时操作同一数据造成脏读的问题。ZooKeeper 本质上是一个分布式的小文件存储系统。 提供基于类似于文件系统的目录树方式的数据存储，并且可以对树中的节点进行有效管理。从而用来维护和监控你存储的数据的状态变化。通过监控这些数据状态的变化，从而可以达到基于数据的集群管理。 诸如： 统一命名服(dubbo)、分布式配置管理(solr的配置集中管理)、分布式消息队列（sub/pub）、分布式锁、分布式协调等功能。</p><h3 id="zookeeper的架构图"><a href="#zookeeper的架构图" class="headerlink" title="zookeeper的架构图"></a>zookeeper的架构图</h3><p><img src="\blogPic\hadoop学习\zookeeper1.png" alt="zookeeper1"></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;hadoop学习&quot;&gt;&lt;a href=&quot;#hadoop学习&quot; class=&quot;headerlink&quot; title=&quot;hadoop学习&quot;&gt;&lt;/a&gt;&lt;center&gt;hadoop学习&lt;/center&gt;&lt;/h1&gt;
+    
+    </summary>
+    
+      <category term="学习" scheme="http://yoursite.com/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="hadoop" scheme="http://yoursite.com/tags/hadoop/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>黑科技</title>
+    <link href="http://yoursite.com/2019/03/07/%E9%BB%91%E7%A7%91%E6%8A%80/"/>
+    <id>http://yoursite.com/2019/03/07/黑科技/</id>
+    <published>2019-03-07T08:50:09.000Z</published>
+    <updated>2019-03-07T11:59:57.586Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+      <category term="黑科技" scheme="http://yoursite.com/categories/%E9%BB%91%E7%A7%91%E6%8A%80/"/>
+    
+    
+      <category term="黑科技" scheme="http://yoursite.com/tags/%E9%BB%91%E7%A7%91%E6%8A%80/"/>
+    
+  </entry>
   
   <entry>
     <title>ssm学习</title>

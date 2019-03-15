@@ -85,7 +85,7 @@
 
 
 
-  <meta name="keywords" content="Redis,">
+  <meta name="keywords" content="hive,">
 
 
 
@@ -98,18 +98,18 @@
 
 
 
-<meta name="description" content="Redis学习">
-<meta name="keywords" content="Redis">
+<meta name="description" content="hive学习hiveSQL 数据库相关操作    Hive配置单元包含一个名为 default 默认的数据库. create database [if not exists] ；---创建数据库  show databases;  --显示所有数据库  drop database if exists  [restrict|cascade];  --删除数据库，默认情况下，hive不允许删除含有表的">
+<meta name="keywords" content="hive">
 <meta property="og:type" content="article">
-<meta property="og:title" content="redis学习">
-<meta property="og:url" content="http://listmyblog.cn/2019/03/04/redis学习/index.html">
+<meta property="og:title" content="hive学习">
+<meta property="og:url" content="http://listmyblog.cn/2019/03/14/hive学习/index.html">
 <meta property="og:site_name" content="Sunstar's blogs">
-<meta property="og:description" content="Redis学习">
+<meta property="og:description" content="hive学习hiveSQL 数据库相关操作    Hive配置单元包含一个名为 default 默认的数据库. create database [if not exists] ；---创建数据库  show databases;  --显示所有数据库  drop database if exists  [restrict|cascade];  --删除数据库，默认情况下，hive不允许删除含有表的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-04T04:39:47.337Z">
+<meta property="og:updated_time" content="2019-03-14T13:12:51.823Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="redis学习">
-<meta name="twitter:description" content="Redis学习">
+<meta name="twitter:title" content="hive学习">
+<meta name="twitter:description" content="hive学习hiveSQL 数据库相关操作    Hive配置单元包含一个名为 default 默认的数据库. create database [if not exists] ；---创建数据库  show databases;  --显示所有数据库  drop database if exists  [restrict|cascade];  --删除数据库，默认情况下，hive不允许删除含有表的">
 
 
 
@@ -139,13 +139,13 @@
 
 
 
-  <link rel="canonical" href="http://listmyblog.cn/2019/03/04/redis学习/">
+  <link rel="canonical" href="http://listmyblog.cn/2019/03/14/hive学习/">
 
 
 
 
 
-  <title>redis学习 | Sunstar's blogs</title>
+  <title>hive学习 | Sunstar's blogs</title>
   
 
 
@@ -302,7 +302,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://listmyblog.cn/2019/03/04/redis学习/">
+    <link itemprop="mainEntityOfPage" href="http://listmyblog.cn/2019/03/14/hive学习/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="dream">
@@ -319,7 +319,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">redis学习</h1>
+          <h1 class="post-title" itemprop="name headline">hive学习</h1>
         
 
         <div class="post-meta">
@@ -331,8 +331,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-04T12:27:49+08:00">
-                2019-03-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-14T21:10:14+08:00">
+                2019-03-14
               </time>
             
 
@@ -388,7 +388,7 @@
                   <span class="post-meta-item-text">阅读时长 ≈</span>
                 
                 <span title="阅读时长">
-                  1
+                  9
                 </span>
               
             </div>
@@ -409,8 +409,140 @@
       
 
       
-        <meta name="generator" content="Hexo 3.8.0"><h1 id="Redis学习"><a href="#Redis学习" class="headerlink" title="Redis学习"></a><center>Redis学习</center></h1><a id="more"></a>
-<p>字符串   set   get    del  (json格式字符串)<br>hash    hset  hget   hgetall  hmset<br>list    lpush  rpush  lpop  rpop<br>set     sadd  smemebers   srem</p>
+        <meta name="generator" content="Hexo 3.8.0"><h1 id="hive学习"><a href="#hive学习" class="headerlink" title="hive学习"></a><center>hive学习</center></h1><h2 id="hiveSQL"><a href="#hiveSQL" class="headerlink" title="hiveSQL"></a>hiveSQL</h2><hr>
+<p>数据库相关操作<br>    Hive配置单元包含一个名为 default 默认的数据库.</p>
+<pre><code>create database [if not exists] <database name="">；---创建数据库
+
+show databases;  --显示所有数据库
+
+drop database if exists <database name=""> [restrict|cascade];  --删除数据库，默认情况下，hive不允许删除含有表的数据库，要先将数据库中的表清空才能drop，否则会报错
+--加入cascade关键字，可以强制删除一个数据库,默认是restrict，表示有限制的
+    eg.  hive> drop database if exists users cascade;
+
+use <database name="">; --切换数据库
+</database></database></database></code></pre><hr>
+<p>分区表（PARTITIONED BY）<br>     分区建表分为2种，一种是单分区，也就是说在表文件夹目录下只有一级文件夹目录。另外一种是多分区，表文件夹下出现多文件夹嵌套模式。</p>
+<pre><code>单分区建表语句：create table day_table (id int, content string) partitioned by (dt string);单分区表，按天分区，在表结构中存在id，content，dt三列。
+
+双分区建表语句：create table day_hour_table (id int, content string) partitioned by (dt string, hour string);双分区表，按天和小时分区，在表结构中新增加了dt和hour两列。
+
+导入数据
+LOAD DATA local INPATH '/root/hivedata/dat_table.txt' INTO TABLE day_table partition(dt='2017-07-07');
+
+LOAD DATA local INPATH '/root/hivedata/dat_table.txt' INTO TABLE day_hour_table PARTITION(dt='2017-07-07', hour='08');
+
+基于分区的查询：
+
+SELECT day_table.* FROM day_table WHERE day_table.dt = '2017-07-07';
+
+查看分区：
+
+show partitions day_hour_table;  
+
+总的说来partition就是辅助查询，缩小查询范围，加快数据的检索速度和对数据按照一定的规格和条件进行管理。
+</code></pre><hr>
+<p>ROW FORMAT DELIMITED（指定分隔符） </p>
+<pre><code>create table day_table (id int, content string) partitioned by (dt string) row format delimited fields terminated by ',';   ---指定分隔符创建分区表
+
+复杂类型的数据表指定分隔符
+
+create table complex_array(name string,work_locations array<string>) row format delimited fields terminated by '\t' collection items terminated by ',';
+
+数据如下：
+ zhangsan    beijing,shanghai,tianjin,hangzhou
+ wangwu    shanghai,chengdu,wuhan,haerbin
+
+create table t_map(id int,name string,hobby map<string,string>)
+row format delimited 
+fields terminated by ','
+collection items terminated by '-'
+map keys terminated by ':' ;
+
+数据：
+1,zhangsan,唱歌:非常喜欢-跳舞:喜欢-游泳:一般般
+2,lisi,打游戏:非常喜欢-篮球:不喜欢
+</string,string></string></code></pre><hr>
+<p>内部表、外部表<br>    建内部表<br>    create table student(Sno int,Sname string,Sex string,Sage int,Sdept string) row format delimited fields terminated by ‘,’;<br>    建外部表<br>    create external table student_ext(Sno int,Sname string,Sex string,Sage int,Sdept string) row format delimited fields terminated by ‘,’ location ‘/stu’;</p>
+<pre><code>内、外部表加载数据：
+load data local inpath '/root/hivedata/students.txt' overwrite into table student;
+
+load data inpath '/stu' into table student_ext;
+</code></pre><hr>
+<p>本地模式<br>set hive.exec.mode.local.auto=true;</p>
+<hr>
+<p>分桶表（cluster by  into num buckets）</p>
+<p>#指定开启分桶<br>set hive.enforce.bucketing = true;<br>set mapreduce.job.reduces=4;</p>
+<p>TRUNCATE TABLE  stu_buck;</p>
+<p>drop table stu_buck;<br>create table stu_buck(Sno int,Sname string,Sex string,Sage int,Sdept string)<br>clustered by(Sno)<br>sorted by(Sno DESC)<br>into 4 buckets<br>row format delimited<br>fields terminated by ‘,’;</p>
+<p>分桶表导入数据<br>insert overwrite table stu_buck<br>select * from student cluster by(Sno);</p>
+<hr>
+<p>分桶、排序等查询：cluster by 、sort by、distribute by</p>
+<p>select * from student cluster by(Sno);</p>
+<p>insert overwrite table student_buck<br>select * from student cluster by(Sno) sort by(Sage);  报错,cluster 和 sort 不能共存</p>
+<p>对某列进行分桶的同时，根据另一列进行排序<br>insert overwrite table stu_buck<br>select * from student distribute by(Sno) sort by(Sage asc);</p>
+<p>总结：<br>cluster（分且排序，必须一样）==distribute（分） + sort（排序）（可以不一样）  </p>
+<hr>
+<p>增加/删除分区</p>
+<p>drop table t_partition;<br>create table t_partition(id int,name string)<br>partitioned by (dt string)<br>row format delimited<br>fields terminated by ‘,’;</p>
+<p>增加分区</p>
+<p>alter table t_partition add partition (dt=’2008-08-08’) location ‘hdfs://node-21:9000/t_parti/‘;<br>执行添加分区时   /t_parti文件夹下的数据不会被移动。并且没有分区目录dt=2008-08-08 </p>
+<p>删除分区</p>
+<p>alter table t_partition drop partition (dt=’2008-08-08’);<br>执行删除分区时/t_parti下的数据会被删除并且连同/t_parti文件夹也会被删除</p>
+<p>注意区别于load data时候添加分区:会移动数据 会创建分区目录</p>
+<hr>
+<p>Insert查询语句</p>
+<p>多重插入：</p>
+<p>create table source_table (id int, name string) row format delimited fields terminated by ‘,’;<br>create table test_insert1 (id int) row format delimited fields terminated by ‘,’;<br>create table test_insert2 (name string) row format delimited fields terminated by ‘,’;</p>
+<p>普通插入：<br>insert into table test_insert1 select id from source_table;<br>insert into table test_insert2 select name from source_table;</p>
+<p>多重插入：<br>from source_table<br>insert overwrite table test_insert1<br>select id<br>insert overwrite table test_insert2<br>select name;</p>
+<hr>
+<p>动态分区插入</p>
+<p>set hive.exec.dynamic.partition=true;    #是否开启动态分区功能，默认false关闭。<br>set hive.exec.dynamic.partition.mode=nonstrict;   #动态分区的模式，默认strict，表示必须指定至少一个分区为静态分区，nonstrict模式表示允许所有的分区字段都可以使用动态分区。</p>
+<p>需求：<br>将dynamic_partition_table中的数据按照时间(day)，插入到目标表d_p_t的相应分区中。</p>
+<p>原始表：<br>create table dynamic_partition_table(day string,ip string)row format delimited fields terminated by “,”; </p>
+<p>load data local inpath ‘/root/hivedata/dynamic_partition_table.txt’ into table dynamic_partition_table;<br>2015-05-10,ip1<br>2015-05-10,ip2<br>2015-06-14,ip3<br>2015-06-14,ip4<br>2015-06-15,ip1<br>2015-06-15,ip2</p>
+<p>目标表：<br>create table d_p_t(ip string) partitioned by (month string,day string);</p>
+<p>静态分区：<br>load data local inpath ‘’ into table d_p_t partition(month=””,day =””);</p>
+<p>动态插入：<br>insert overwrite table d_p_t partition (month,day)<br>select ip,substr(day,1,7) as month,day from dynamic_partition_table;</p>
+<hr>
+<p>查询结果导出到文件系统</p>
+<p>3、将查询结果保存到指定的文件目录（可以是本地，也可以是hdfs）<br>insert overwrite local directory ‘/root/123456’<br>select * from t_p;</p>
+<p>insert overwrite directory ‘/aaa/test’<br>select * from t_p;</p>
+<hr>
+<p>关于hive中的各种join</p>
+<p>准备数据<br>1,a<br>2,b<br>3,c<br>4,d<br>7,y<br>8,u</p>
+<p>2,bb<br>3,cc<br>7,yy<br>9,pp</p>
+<p>建表：<br>create table a(id int,name string)<br>row format delimited fields terminated by ‘,’;</p>
+<p>create table b(id int,name string)<br>row format delimited fields terminated by ‘,’;</p>
+<p>导入数据：<br>load data local inpath ‘/root/hivedata/a.txt’ into table a;<br>load data local inpath ‘/root/hivedata/b.txt’ into table b;</p>
+<p>实验：<br>*<em> inner join<br>select </em> from a inner join b on a.id=b.id;</p>
+<p>select a.id,a.name from a join b on a.id = b.id;</p>
+<p>+——-+———+——-+———+–+<br>| a.id  | a.name  | b.id  | b.name  |<br>+——-+———+——-+———+–+<br>| 2     | b       | 2     | bb      |<br>| 3     | c       | 3     | cc      |<br>| 7     | y       | 7     | yy      |<br>+——-+———+——-+———+–+</p>
+<p>*<em>left join<br>select </em> from a left join b on a.id=b.id;<br>+——-+———+——-+———+–+<br>| a.id  | a.name  | b.id  | b.name  |<br>+——-+———+——-+———+–+<br>| 1     | a       | NULL  | NULL    |<br>| 2     | b       | 2     | bb      |<br>| 3     | c       | 3     | cc      |<br>| 4     | d       | NULL  | NULL    |<br>| 7     | y       | 7     | yy      |<br>| 8     | u       | NULL  | NULL    |<br>+——-+———+——-+———+–+</p>
+<p>*<em>right join<br>select </em> from a right join b on a.id=b.id;</p>
+<p>select * from b right join a on b.id=a.id;<br>+——-+———+——-+———+–+<br>| a.id  | a.name  | b.id  | b.name  |<br>+——-+———+——-+———+–+<br>| 2     | b       | 2     | bb      |<br>| 3     | c       | 3     | cc      |<br>| 7     | y       | 7     | yy      |<br>| NULL  | NULL    | 9     | pp      |<br>+——-+———+——-+———+–+</p>
+<p>*<em><br>select </em> from a full outer join b on a.id=b.id;<br>+——-+———+——-+———+–+<br>| a.id  | a.name  | b.id  | b.name  |<br>+——-+———+——-+———+–+<br>| 1     | a       | NULL  | NULL    |<br>| 2     | b       | 2     | bb      |<br>| 3     | c       | 3     | cc      |<br>| 4     | d       | NULL  | NULL    |<br>| 7     | y       | 7     | yy      |<br>| 8     | u       | NULL  | NULL    |<br>| NULL  | NULL    | 9     | pp      |<br>+——-+———+——-+———+–+</p>
+<p>*<em>hive中的特别join<br>select </em> from a left semi join b on a.id = b.id;</p>
+<p>select a.*  from a inner join b on a.id = b.id;</p>
+<p>+——-+———+–+<br>| a.id  | a.name  |<br>+——-+———+–+<br>| 2     | b       |<br>| 3     | c       |<br>| 7     | y       |<br>+——-+———+–+<br>相当于<br>select a.id,a.name from a where a.id in (select b.id from b); 在hive中效率极低</p>
+<p>select a.id,a.name from a join b on (a.id = b.id);</p>
+<p>select * from a inner join b on a.id=b.id;</p>
+<p>cross join（##慎用）<br>返回两个表的笛卡尔积结果，不需要指定关联键。<br>select a.<em>,b.</em> from a cross join b;</p>
+<hr>
+<p>内置jason函数</p>
+<h2 id="select-get-json-object-line-’-movie’-as-moive-get-json-object-line-’-rate’-as-rate-from-rat-json-limit-10"><a href="#select-get-json-object-line-’-movie’-as-moive-get-json-object-line-’-rate’-as-rate-from-rat-json-limit-10" class="headerlink" title="select get_json_object(line,’$.movie’) as moive,get_json_object(line,’$.rate’) as rate  from rat_json limit 10;"></a>select get_json_object(line,’$.movie’) as moive,get_json_object(line,’$.rate’) as rate  from rat_json limit 10;</h2><p>transform案例:</p>
+<p>1、先加载rating.json文件到hive的一个原始表 rat_json<br>create table rat_json(line string) row format delimited;<br>load data local inpath ‘/root/hivedata/rating.json’ into table rat_json;</p>
+<p>2、需要解析json数据成四个字段，插入一张新的表 t_rating<br>drop table if exists t_rating;<br>create table t_rating(movieid string,rate int,timestring string,uid string)<br>row format delimited fields terminated by ‘\t’;</p>
+<p>insert overwrite table t_rating<br>select get_json_object(line,’$.movie’) as moive,get_json_object(line,’$.rate’) as rate,get_json_object(line,’$.timeStamp’) as timestring, get_json_object(line,’$.uid’) as uid from rat_json limit 10;</p>
+<p>3、使用transform+python的方式去转换unixtime为weekday<br>先编辑一个python脚本文件</p>
+<p>########python######代码<br>vi weekday_mapper.py<br>!/bin/python</p>
+<p>import sys<br>import datetime</p>
+<p>for line in sys.stdin:<br>  line = line.strip()<br>  movieid, rating, unixtime,userid = line.split(‘\t’)<br>  weekday = datetime.datetime.fromtimestamp(float(unixtime)).isoweekday()<br>  print ‘\t’.join([movieid, rating, str(weekday),userid])</p>
+<p>保存文件<br>然后，将文件加入hive的classpath：<br>hive>add FILE /root/hivedata/weekday_mapper.py;</p>
+<p>create table u_data_new as select<br>  transform (movieid, rate, timestring,uid)<br>  using ‘python weekday_mapper.py’<br>  as (movieid, rate, weekday,uid)<br>from t_rating;</p>
+<p>select distinct(weekday) from u_data_new limit 10;</p>
+<hr>
+<p>desc formatted student;</p>
 
       
     </div>
@@ -437,7 +569,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Redis/" rel="tag"><i class="fa fa-tag"></i>Redis</a>
+            <a href="/tags/hive/" rel="tag"><i class="fa fa-tag"></i>hive</a>
           
         </div>
       
@@ -450,8 +582,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/03/04/Sql学习/" rel="next" title="Sql学习">
-                <i class="fa fa-chevron-left"></i> Sql学习
+              <a href="/2019/03/09/hadoop学习/" rel="next" title="hadoop学习">
+                <i class="fa fa-chevron-left"></i> hadoop学习
               </a>
             
           </div>
@@ -460,8 +592,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/03/04/ssm学习/" rel="prev" title="ssm学习">
-                ssm学习 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/03/15/大数据行情/" rel="prev" title="大数据行情">
+                大数据行情 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -635,7 +767,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis学习"><span class="nav-number">1.</span> <span class="nav-text">Redis学习</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#hive学习"><span class="nav-number">1.</span> <span class="nav-text">hive学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#hiveSQL"><span class="nav-number">1.1.</span> <span class="nav-text">hiveSQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#select-get-json-object-line-’-movie’-as-moive-get-json-object-line-’-rate’-as-rate-from-rat-json-limit-10"><span class="nav-number">1.2.</span> <span class="nav-text">select get_json_object(line,’$.movie’) as moive,get_json_object(line,’$.rate’) as rate  from rat_json limit 10;</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -807,9 +939,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://listmyblog.cn/2019/03/04/redis学习/';
-          this.page.identifier = '2019/03/04/redis学习/';
-          this.page.title = 'redis学习';
+          this.page.url = 'http://listmyblog.cn/2019/03/14/hive学习/';
+          this.page.identifier = '2019/03/14/hive学习/';
+          this.page.title = 'hive学习';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://listmyblog.disqus.com/embed.js';

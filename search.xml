@@ -4,11 +4,86 @@
   
     
     <entry>
+      <title>集成支付宝接口时遇到的问题</title>
+      <link href="/2019/09/08/%E9%9B%86%E6%88%90%E6%94%AF%E4%BB%98%E5%AE%9D%E6%8E%A5%E5%8F%A3%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/"/>
+      <url>/2019/09/08/%E9%9B%86%E6%88%90%E6%94%AF%E4%BB%98%E5%AE%9D%E6%8E%A5%E5%8F%A3%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+      
+        <content type="html"><![CDATA[<html><head></head><body><p>#</p><center>集成支付宝接口时遇到的问题</center><p></p><p>###遇到的问题: </p><p>发现客户在前台通过支付宝充值成功了，而且数据库也有了充值成功记录，并且充值状态是成功的，但是该用户的积分数值没有改变，我自己测试的时候是没有问题的，事后我通过后台的补充充值也能给他充值成功，后台和前台是同样的dao，mng层，想不通是为什么没有能够充值成功。 </p><p>###目前解决的办法： </p><p>经排查，支付宝的充值功能接口分为同步和异步两种方式，我只实现了同步充值的接口，而异步充值的接口没有具体实现，导致我自己测试时可以充值成功，而客户则是有些人可以充值成功，有些人却无法充值成功。 </p><p>经检查，因为对代码理解不够透彻，我的同步充值的实现复杂化了，在同步充值的时候，我调用了查询充值是否成功的接口，其实是不需要的，支付宝接口在预创建账单时传入了参数值，可以直接在同步充值时获取到，通过预创建菜单时得到的参数值进行相关业务逻辑的编写。 </p><p>异步充值的原理是，支付宝相关接口有可能不走同步执行的逻辑转而走异步执行逻辑代码，异步执行其实就是，支付宝不用你自己回调函数，而是支付宝服务器给你发送一个异步post请求，里面携带相关的参数，包括安全验证的参数，服务器获得post请求后异步执行相关的充值业务，从而减小服务器压力，提高效率。 </p><p>我进行充值的业务逻辑是，预创建账单时在js_userscore_pay表插入一条记录，记录相关的充值信息，充值状态status记录为false，在支付成功调用同步或者异步充值时(我一开始没写异步充值业务代码)，再修改充值状态status为true，然后在js_userscore积分表增加充值的积分。 </p><p>但后来发现一个问题，我充值记录的status状态码发生了改变，变为true了，但是我积分表的积分数值没有增加，状态码和积分数值的增加是在同步或者异步充值的回调函数的实现的，不应该只改变了状态码，而积分数值没有变化。 </p><p>两种可能，一种是同步回调函数只执行了一半，然后就执行了异步充值逻辑，而异步充 </p><p>值我没有实现业务代码，所以充值失败了;还有一种可能，更新账户余额的行为没有执行，数据库rollback了。 </p><p>后期经过修改，添加和修改了异步，同步执行逻辑代码，执行同步代码块充值可以成功，但是异步充值失败，经检查发现，异步充值权限校验不通过，但是同步检验通过。 </p><p>目前暂时的做法是，不做权限检验，来请求获取参数，根据参数进行充值，后期再进行修改 </p></body></html>]]></content>
+      
+      
+      <categories>
+          
+          <category> 工作 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>服务器每天报session关闭的错误</title>
+      <link href="/2019/09/08/%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%AF%8F%E5%A4%A9%E6%8A%A5session%E5%85%B3%E9%97%AD%E7%9A%84%E9%94%99%E8%AF%AF/"/>
+      <url>/2019/09/08/%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%AF%8F%E5%A4%A9%E6%8A%A5session%E5%85%B3%E9%97%AD%E7%9A%84%E9%94%99%E8%AF%AF/</url>
+      
+        <content type="html"><![CDATA[<html><head></head><body><p>#</p><center>服务器每天报session关闭的错误</center><p></p><p>###问题描述: </p><p>每天上午九点多，服务器会都出现异常，停止访问的问题，服务器端直接的报错是:session is closed</p><p>###问题分析与测试: </p><p> 因为我的tomcat session是存储在redis中的，所以初步分析可能是redis出问题了，于是我检查了redis运行状况，一切正常，会不会是redis内存不够呢，我查看内存情况，我没有给redis限制内存大小，所以应该也不会是这个原因，我初步排除了redis出错的可能(我还应该查询redis的并发量等状况的)；  </p><p>其次，怀疑可能是因为tomcat和mysql内存冲突，我143服务器上同时部署了tomcat从和mysql主，有可能是服务器内存不够，而我之前看到过，mysql很霸道，它如果内存不够的话会杀死其他进程，夺取内存，于是，我尝试关闭了143的tomcat，只留下一个mysql，第二天，服务器还是出现了相同的问题，所以，排除内存不够的情况； </p><p>于是，推测可能是因为mysql的原因，性能没有进行调优，检查每次服务器故障的时候的内存cpu使用情况，发现内存使用率不高，但是进程cpu使用率达到了5000%以上，服务器cpu使用率达到了80%以上，于是查询相关mysql性能优化的配置方案，进行了相关配置，重启了mysql，第二天还是出现了宕机的情况。 </p><p>检查mysql.log日志，发现相应的宕机时间段，出现了很多page cleaner超时的ERROR，经检查，可能还是服务器性能的原因，cpu使用量过大，有可能是服务器性能不够用了，但是配置完后还是不行，后来检查相关时间段的mysql的show full processlist，发现出现了大量的相同的复杂查询，经检查，每执行一次这种查询需要耗时0.88s左右，在processlist中出现了100多个类似查询，推测mysql受慢查询的影响而无法响应，出现了大量脏页数据，mysql服务器处理不过来了。又经检查nginx日志，发现相关时间段出现了很多访问某个动态页面的请求，动态页面中有一个排行榜榜单，用到了该动态查询，正常我们项目中这种榜单都被静态化了，所以尝试去除该动态页面中的排行榜，第二天，果然没有出现宕机的现象，所以，最终解决了这个问题。 </p></body></html>]]></content>
+      
+      
+      <categories>
+          
+          <category> 工作 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 服务器 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>《Java多线程核心技术》总结</title>
+      <link href="/2019/09/08/%E3%80%8AJava%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E3%80%8B%E6%80%BB%E7%BB%93/"/>
+      <url>/2019/09/08/%E3%80%8AJava%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E3%80%8B%E6%80%BB%E7%BB%93/</url>
+      
+        <content type="html"><![CDATA[<html><head></head><body><p>#</p><center>《Java多线程核心技术》总结</center><p></p><ul><li>synchronized同步方法，同步语句块</li><li><p>volatile关键字的主要作用是使变量在多个线程之间可见</p></li><li><p>ThreadLocal</p><p>类ThreadLocal主要解决的就是每个线程绑定自己的值，可以将ThreadLocal类比喻成全局存放数据的盒子，盒子中可以存储每个线程的私有数据。</p></li><li><p>守护线程</p><p>在java中有两种线程，一种是用户线程，另一种是守护线程。</p><p>守护线程是一种特殊的线程，它的特性有”陪伴”的含义，当进程中不存在非守护线程了，则守护线程自动销毁。典型的守护线程就是垃圾回收线程，当进程中没有非守护线程了，则垃圾回收线程就没有存在的必要了，自动销毁。</p></li><li><p>volatile 关键字</p><p>关键字volatile的主要作用是使变量在多个线程间可见。</p></li><li><p>线程间通信机制</p><ul><li><p>等待通知机制 wait/notify/interrupt</p></li><li><p>通过管道进行线程间通信 </p><p>PipeInputStream/PipeOutputStream</p><p>PipeReader/PipeWriter</p></li><li><p>join的使用</p><p>在很多情况下，主线程创建并启动子线程，如果子线程中要进行大量的耗时运算，主线程往往将早于子线程结束之前结束。这时主线程想等待子线程执行完成之后再结束，比如子线程处理一个数据，主线程要取得这个数据中的值，就要用到join()方法了。方法join()的作用是等待线程对象销毁。</p></li><li><p>类ThreadLocal的使用</p></li></ul></li><li><p>Lock</p><ul><li><p>ReentrantLock类</p><p>JDK1.5中新增了ReentrantLock类也能达到类似synchronized关键字来实现线程间的同步互斥，扩展功能上更加强大</p><p>使用示例：</p><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Lock lock=new ReentrantLock();</span><br><span class="line">...</span><br><span class="line">lock.lock();</span><br><span class="line">...</span><br><span class="line">lock.unlock();</span><br></pre></td></tr></tbody></table></figure></li></ul></li></ul><pre><code>​    </code></pre><ul><li><p>使用Condition实现等待/通知</p><p>类似synchronized与wait()/notify()/notifyAll()方法相结合可以实现等待/通知模式，类ReentrantLock借助于Condition对象也可以实现同样的功能，且具有更好的灵活性</p></li><li><p>Condition对象可以实现多路通知功能</p><p>在一个Lock对象里面可以创建多个Condition(即对象监视器)实例，同一个Lock锁可以创建多个Condition监视器，不同的线程使用不同的Condition监视器进行等待通知，可以有选择性地进行线程通知</p></li><li><p>公平锁和非公平锁</p><p>锁Lock分为”公平锁”和”非公平锁”，公平锁表示线程获取锁的顺序是按照线程加锁的顺序来分配的，即先来先得的FIFO先进先出顺序。而非公平锁就是一种获取锁的抢占机制，是随机获得锁的，和公平锁不一样的就是先来的不一定先得到锁，这个方式可能造成某些线程一直拿不到锁，结果也就是不公平的。(公平与不公平并不是绝对的，公平锁10个线程中可能有1个不按照FIFO规则，但大多数还是按照这个规则)。</p></li><li><p>Lock锁还有许多方法函数：</p><p>getHoldCount()、getQueueLength()、getWaitQueueLength()……</p></li><li><p>ReentrantReadWriteLock类</p><p>类ReentrantLock具有完全互斥排他的效果，即同一时间只有一个线程在执行ReentrantLock.lock()方法后面的任务，虽然线程安全但是效率低下，使用读写锁ReentrantReadWriteLock类，可以提升该方法代码运行速度。</p><p>读写锁表示有两个锁，一个是读操作相关的锁，称为共享锁；一个是写操作相关的锁，称为排他锁。多个读锁之间不互斥，读锁与写锁互斥，写锁与写锁互斥。</p><p>示例：</p><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ReentrantReadWriteLock lock=new ReentrantReadWriteLock();</span><br><span class="line">...</span><br><span class="line">lock.readLock().lock();</span><br><span class="line">...</span><br><span class="line">lock.readLock().unlock();</span><br><span class="line">...</span><br><span class="line">lock.writeLock().lock();</span><br><span class="line">...</span><br><span class="line">lock.writeLock().unlock();</span><br></pre></td></tr></tbody></table></figure></li></ul><ul><li><p>定时器Timer的使用</p><ul><li>schedule(TimerTask task,Date time)</li><li>schedule(TimerTask task,Date firstTime,long period)</li><li>schedule(TimerTask task, long delay)</li><li>schedule(TimerTask task, long delay, long period)</li><li>scheduleAtFixedRate(TimerTask task,Date firstTime,long period)</li></ul></li><li><p>单例模式与多线程</p><p>懒汉模式中，多线程环境中，”延迟加载”不能实现保持单例的状态，单纯地同步整个代码块会使效率降低或者无法保持单例，使用DCL双检查锁机制。</p><p>示例代码：</p><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">volatile static MyObject myObject;</span><br><span class="line">...</span><br><span class="line">public static MyObject getInstance(){</span><br><span class="line">  if(myObject!=null){</span><br><span class="line">  }else{</span><br><span class="line">    //模拟在创建对象之前做一些准备性的工作</span><br><span class="line">    Thread.sleep(3000);</span><br><span class="line">    synchronized(MyObject.class){</span><br><span class="line">      if(myObject==null){</span><br><span class="line">        myObject=new MyObject();</span><br><span class="line">      }</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">  ...</span><br><span class="line">}</span><br><span class="line">...</span><br></pre></td></tr></tbody></table></figure><ul><li><p>还可以使用静态内置类实现单例模式</p></li><li><p>多线程的序列化和反序列化</p><p>需要添加readResolve()方法:</p><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">protected Object readResolve(){</span><br><span class="line">  return MyObjectHandler.myObject;</span><br><span class="line">}</span><br><span class="line">...</span><br></pre></td></tr></tbody></table></figure></li><li><p>static代码块实现单例模式</p><p>静态代码块中的代码在使用的时候就已经执行了，所以可以应用静态代码块的这个特性来实现单例设计模式。</p></li><li><p>enum枚举数据类型实现单例模式</p><p>枚举enum和静态代码块的特性相似，在使用枚举类时，构造方法会被自动调用，也可以应用其这个特性实现单例设计模式。</p><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public enum MyObject{</span><br><span class="line">  connectionFactory;</span><br><span class="line">  private Connection connection;</span><br><span class="line">  private MyObject(){</span><br><span class="line">    try{</span><br><span class="line">      ...</span><br><span class="line">      connection=DriverManager.getConnection(url,username,password);</span><br><span class="line">    }catch(...){</span><br><span class="line">      ...</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">  public Connection getConnection(){</span><br><span class="line">    return connection;</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></li></ul></li><li><p>线程的状态</p><p>new、runnable、ready、running、timed waiting、waiting、blocked、terminated</p></li><li><p>线程组</p><p>可以把线程归属到某一个线程组中，线程组中可以有线程对象，也可以有线程组，组中还可以有线程。这样的组织结构有些类似于树的形式。</p></li><li><p>SimpleDateFormat非线程安全</p><ul><li><p>类SimpleDateFormat是非线程安全的</p><ul><li><p>解决方案1：</p><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class DateTools{</span><br><span class="line">  public static Date parse(String formatPattern,String dateString) throws ParseException{</span><br><span class="line">    return new SimpleDateFormat(formatPattern).parse(dateString);</span><br><span class="line">  }</span><br><span class="line">  public static String format(String formatPattern,Date date){</span><br><span class="line">    return new SImpleDateFormat(formatPattern).format(date).toString();</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure><p>解决处理错误的原理就是创建了多个SimpleDateFormat类的实例。</p></li><li><p>解决方案2:</p><p>ThreadLocal类能使线程绑定到指定的对象，使用该类也可以解决多线程环境下SimpleDateFormat类处理错误的情况</p><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public class DateTools{</span><br><span class="line">  private static ThreadLocal<SimpleDateFormat> t1=new ThreadLocal<SimpleDateFormat>();</span><br><span class="line">  public static SimpleDateFormat getSimpleDateFormat(String datePattern){</span><br><span class="line">    SimpleDateFormat sdf=null;</span><br><span class="line">    sdf=t1.get();</span><br><span class="line">    if(sdf==null){</span><br><span class="line">      sdf=new SimpleDateFormat(datePattern);</span><br><span class="line">      t1.set(sdf);</span><br><span class="line">    }</span><br><span class="line">    return sdf;</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></li></ul></li></ul></li><li><p>线程中出现异常的处理</p><ul><li>方法setUncaughtExceptionHandler()的作用时对指定的线程对象设置默认的异常处理器。</li><li>方法setDefaultUncaughtExceptionHandler()对所有线程对象设置异常处理器。</li></ul></li></ul></body></html>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>感想_sh</title>
       <link href="/2019/03/30/%E6%84%9F%E6%83%B3-sh/"/>
       <url>/2019/03/30/%E6%84%9F%E6%83%B3-sh/</url>
       
-        <content type="html"><![CDATA[<html><head></head><body><h1 id="感想——sh"><a href="#感想——sh" class="headerlink" title="感想——sh"></a><center>感想——sh</center></h1><p>在自然博物馆，看着地球的形成，自然的演变，环境的发展，生命的孕育，我深刻地意识到知道人类相对于自然的渺小，所谓的人定胜天是多么可笑，人类对自然应该保持有根本的敬畏。</p><p>我要抓住机会做自己想做的事情，不能因为一时的犹豫而事后后悔。</p><p>对于人生，我想静静地，慢慢地感受，感受不同地方的文化差异，感受人与人之间的情感所系，感受健康的身体让我有机会去体验多种多样的人生，我想了解中国的文化，理解中国文化的精髓。</p><p>“茶壶里煮饺子，有货倒不出”，这可能一定程度上是我的真实写照，我要锻炼自己，让自己能够多表现自己，说出自己的想法，不要羞于表达，不要不屑表达，怀着一颗自然的心，去进步，去成长。</p></body></html>]]></content>
+        <content type="html"><![CDATA[<html><head></head><body><h1 id="感想——sh"><a href="#感想——sh" class="headerlink" title="感想——sh"></a><center>感想——sh</center></h1><a id="more"></a><p>在自然博物馆，看着地球的形成，自然的演变，环境的发展，生命的孕育，我深刻地意识到知道人类相对于自然的渺小，所谓的人定胜天是多么可笑，人类对自然应该保持有根本的敬畏。</p><p>我要抓住机会做自己想做的事情，不能因为一时的犹豫而事后后悔。</p><p>对于人生，我想静静地，慢慢地感受，感受不同地方的文化差异，感受人与人之间的情感所系，感受健康的身体让我有机会去体验多种多样的人生，我想了解中国的文化，理解中国文化的精髓。</p><p>“茶壶里煮饺子，有货倒不出”，这可能一定程度上是我的真实写照，我要锻炼自己，让自己能够多表现自己，说出自己的想法，不要羞于表达，不要不屑表达，怀着一颗自然的心，去进步，去成长。</p></body></html>]]></content>
       
       
       <categories>
